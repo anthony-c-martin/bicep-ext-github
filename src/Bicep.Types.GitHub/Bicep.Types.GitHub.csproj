@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Bicep.Types.Github</RootNamespace>
+    <StartupObject>Bicep.Types.Github.Program</StartupObject>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="Azure.Bicep.Types" Version="0.5.9" />
+  </ItemGroup>
+</Project>

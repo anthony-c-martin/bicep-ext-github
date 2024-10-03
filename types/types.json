@@ -1,0 +1,104 @@
+[
+  {
+    "$type": "StringType",
+    "sensitive": true,
+    "minLength": null,
+    "maxLength": null,
+    "pattern": null
+  },
+  {
+    "$type": "StringType",
+    "sensitive": null,
+    "minLength": null,
+    "maxLength": null,
+    "pattern": null
+  },
+  {
+    "$type": "ObjectType",
+    "name": "body",
+    "properties": {
+      "owner": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 17,
+        "description": null
+      },
+      "name": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 17,
+        "description": null
+      }
+    },
+    "additionalProperties": null,
+    "sensitive": null
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Repository",
+    "scopeType": 0,
+    "readOnlyScopes": null,
+    "body": {
+      "$ref": "#/2"
+    },
+    "flags": 0,
+    "functions": null
+  },
+  {
+    "$type": "ObjectType",
+    "name": "body",
+    "properties": {
+      "owner": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 17,
+        "description": null
+      },
+      "name": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 17,
+        "description": null
+      },
+      "user": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 17,
+        "description": null
+      }
+    },
+    "additionalProperties": null,
+    "sensitive": null
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Collaborator",
+    "scopeType": 0,
+    "readOnlyScopes": null,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0,
+    "functions": null
+  },
+  {
+    "$type": "ObjectType",
+    "name": "configuration",
+    "properties": {
+      "token": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": null
+      }
+    },
+    "additionalProperties": null,
+    "sensitive": null
+  }
+]
