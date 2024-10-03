@@ -1,9 +1,7 @@
 using 'main.bicep'
 
-// TODO: Fix the below by saving your GH access token:
-//         gh auth token > ../secrets/githubtoken
 param githubToken = readEnvironmentVariable('GITHUB_TOKEN')
 
 param owner = 'anthony-c-martin'
-param repoName = 'bicep'
+param repoName = 'bicep-ext-github'
 param collaboratorName = 'anthony-c-martin'
