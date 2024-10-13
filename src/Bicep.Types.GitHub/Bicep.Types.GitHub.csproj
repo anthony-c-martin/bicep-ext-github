@@ -8,6 +8,6 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="Azure.Bicep.Types" Version="0.5.9" />
+    <PackageReference Include="Azure.Bicep.Types" Version="0.5.110" />
   </ItemGroup>
 </Project>
