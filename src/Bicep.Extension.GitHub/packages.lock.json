@@ -24,13 +24,13 @@
       },
       "Grpc.AspNetCore": {
         "type": "Direct",
-        "requested": "[2.63.0, )",
-        "resolved": "2.63.0",
-        "contentHash": "aDCMgtw4Ea2qV/xUPLFXj0qDn/ihKxTP/au6vSkDV4pa/ROU+4BeX71vuUfngG97mgMA3kzPLAKDSkl82zKXug==",
+        "requested": "[2.66.0, )",
+        "resolved": "2.66.0",
+        "contentHash": "b4V5V/yiCeK94wiQReUyHPB/Xj/fCaDWhlcFnYzSCm3pQtyADAN9t3g7V631PzLjFZQnPn9iIN3M6BHnVx3nfA==",
         "dependencies": {
-          "Google.Protobuf": "3.24.0",
-          "Grpc.AspNetCore.Server.ClientFactory": "2.63.0",
-          "Grpc.Tools": "2.63.0"
+          "Google.Protobuf": "3.27.0",
+          "Grpc.AspNetCore.Server.ClientFactory": "2.66.0",
+          "Grpc.Tools": "2.66.0"
         }
       },
       "Microsoft.NET.ILLink.Tasks": {
@@ -67,56 +67,56 @@
       },
       "Grpc.AspNetCore.Server": {
         "type": "Transitive",
-        "resolved": "2.63.0",
-        "contentHash": "KoOz6f23k9p9+NnQw78MiMAUYNOZ8HqATcdS2Q6f9K+F8EMJbj2+Vcie88z1OpLc+7iObr4PbK3Xmf4Nm5XbGw==",
+        "resolved": "2.66.0",
+        "contentHash": "SogFEs8bLvcRtEWMdueOJeMxiaLryvyivWtmBwz/vLtS5xlN4Zrfv+npMbn1PS4iT99AqBY+R+bRxdIFfvfeIA==",
         "dependencies": {
-          "Grpc.Net.Common": "2.63.0"
+          "Grpc.Net.Common": "2.66.0"
         }
       },
       "Grpc.AspNetCore.Server.ClientFactory": {
         "type": "Transitive",
-        "resolved": "2.63.0",
-        "contentHash": "e4VOlNQwFsKgnwPVdYO3Z2NG+rSdk6jStMazfxHlcE0Yr9tSDJxLa30Fgi8tx+S0nplAzjXmqzKhG5hUhRYugw==",
+        "resolved": "2.66.0",
+        "contentHash": "glLCZ5K8iBSzzd2eIKjMBYBApygvwJqGJ87FBJrHL4bSrnBTywCUFfLj2EckiPjvvW6SNwLtapwdY4Sj0WwWQg==",
         "dependencies": {
-          "Grpc.AspNetCore.Server": "2.63.0",
-          "Grpc.Net.ClientFactory": "2.63.0"
+          "Grpc.AspNetCore.Server": "2.66.0",
+          "Grpc.Net.ClientFactory": "2.66.0"
         }
       },
       "Grpc.Core.Api": {
         "type": "Transitive",
-        "resolved": "2.65.0",
-        "contentHash": "VHElVX8XpJoaoddHkxhSHrXqn+7k3cZRmAxvZFh0NElkZK5oAT0/QOPM2FJtt5/xIxjQPumz3TOkzrUT6b8V6g=="
+        "resolved": "2.66.0",
+        "contentHash": "HsjsQVAHe4hqP4t4rpUnmq+MZvPdyrlPsWF4T5fbMvyP3o/lMV+KVJfDlaNH8+v0aGQTVT3EsDFufbhaWb52cw=="
       },
       "Grpc.Net.Client": {
         "type": "Transitive",
-        "resolved": "2.65.0",
-        "contentHash": "ys1Rz7pxV0XR2pm4BVMkm/PrJ2BQu8OXFTvnXzzelTvQ+19OiHbUSb1kSZ2X4V7FziaxrtWY52ssXK3MFjQxbg==",
+        "resolved": "2.66.0",
+        "contentHash": "GwkSsssXFgN9+M2U+UQWdErf61sn1iqgP+2NRBlDXATcP9vlxda0wySxd/eIL8U522+SnyFNUXlvQ5tAzGk9cA==",
         "dependencies": {
-          "Grpc.Net.Common": "2.65.0",
+          "Grpc.Net.Common": "2.66.0",
           "Microsoft.Extensions.Logging.Abstractions": "6.0.0"
         }
       },
       "Grpc.Net.ClientFactory": {
         "type": "Transitive",
-        "resolved": "2.63.0",
-        "contentHash": "RRT841A/JwmvXu+Fh8Gl9FNwwW8bc/Z0wm2F99SG26UGvTRCv39kx4edLtDuwo5ICrHpEu1fnsWMcPItamL7UQ==",
+        "resolved": "2.66.0",
+        "contentHash": "I6HUbtcqb24OiQlbvxpBLruCxQ8wrmJ5tUtU96QK7nqyerrMLeqLDDbhotznPAnZtR8x1bJvck/Xt4fgvVo92Q==",
         "dependencies": {
-          "Grpc.Net.Client": "2.63.0",
+          "Grpc.Net.Client": "2.66.0",
           "Microsoft.Extensions.Http": "6.0.0"
         }
       },
       "Grpc.Net.Common": {
         "type": "Transitive",
-        "resolved": "2.65.0",
-        "contentHash": "XbRegnfDrWoXZJ4GGdJat+KXnmCCkR6XQmWnIZxxIjphyZkWZgI0FN1PtGXU4RZ5a5C85qg1cscz1ju2biVXGg==",
+        "resolved": "2.66.0",
+        "contentHash": "YJpQpIvpo0HKlsG6SHwaieyji08qfv0DdEDIewCAA0egQY08637sHOj1netLGUhzBEsCqlGC3e92TZ2uqhxnvw==",
         "dependencies": {
-          "Grpc.Core.Api": "2.65.0"
+          "Grpc.Core.Api": "2.66.0"
         }
       },
       "Grpc.Tools": {
         "type": "Transitive",
-        "resolved": "2.63.0",
-        "contentHash": "kJ1+gtEmHQTG8AOtHQ1c/ScRihMijElYqylGGurraQP9yrl3paueI/iinsm6SOUjgOO3jjd3x3TmWNe8uvcRrw=="
+        "resolved": "2.66.0",
+        "contentHash": "URTltx2E0aTGQqVW+H09AZiGR/qyQ3naHPymSG1/Ytgm8bPdjSltnsIFanbxb7rXxdYwGzLFGy82R82M1UktXg=="
       },
       "Microsoft.Build.Tasks.Git": {
         "type": "Transitive",
