@@ -4,13 +4,13 @@
     "net8.0": {
       "Azure.Bicep.Local.Extension": {
         "type": "Direct",
-        "requested": "[0.30.23, )",
-        "resolved": "0.30.23",
-        "contentHash": "wJAJdGT/rnP/LeXwAWMPz0ViV6LzbRUOz6/tzmQ0PBBGvllDu7OgxNUfxSoY+9wtwN325tm9QNAndfXbCHNNwQ==",
+        "requested": "[0.31.34, )",
+        "resolved": "0.31.34",
+        "contentHash": "O7hZAsQzvCwWZby3WuaYM71demHizFu59ZpaH+6KQH2oyaJp0a5IrHscVDu7NH5QCnt+QqfCp+EMHou0W0+psg==",
         "dependencies": {
           "CommandLineParser": "2.9.1",
-          "Google.Protobuf": "3.28.0",
-          "Grpc.Net.Client": "2.65.0"
+          "Google.Protobuf": "3.28.3",
+          "Grpc.Net.Client": "2.66.0"
         }
       },
       "Azure.Bicep.Types": {
@@ -62,8 +62,8 @@
       },
       "Google.Protobuf": {
         "type": "Transitive",
-        "resolved": "3.28.0",
-        "contentHash": "lVsLcLIHpkOABswgydr0sjkIhSN5XE9C6AgLXxvMsa6pSSJIpmAIPvK/NZpuF+HTB6xp1R8T5nhLausWVOrU/w=="
+        "resolved": "3.28.3",
+        "contentHash": "OewySX3aQCdKfMJsj2DzBMXQJPI+lm0CBzamU9ViFu3CU9tXYrQWqJ1CZ+/UWtkwOjUeIzbXmoOjRc7B8pbMrA=="
       },
       "Grpc.AspNetCore.Server": {
         "type": "Transitive",
@@ -84,15 +84,15 @@
       },
       "Grpc.Core.Api": {
         "type": "Transitive",
-        "resolved": "2.65.0",
-        "contentHash": "VHElVX8XpJoaoddHkxhSHrXqn+7k3cZRmAxvZFh0NElkZK5oAT0/QOPM2FJtt5/xIxjQPumz3TOkzrUT6b8V6g=="
+        "resolved": "2.66.0",
+        "contentHash": "HsjsQVAHe4hqP4t4rpUnmq+MZvPdyrlPsWF4T5fbMvyP3o/lMV+KVJfDlaNH8+v0aGQTVT3EsDFufbhaWb52cw=="
       },
       "Grpc.Net.Client": {
         "type": "Transitive",
-        "resolved": "2.65.0",
-        "contentHash": "ys1Rz7pxV0XR2pm4BVMkm/PrJ2BQu8OXFTvnXzzelTvQ+19OiHbUSb1kSZ2X4V7FziaxrtWY52ssXK3MFjQxbg==",
+        "resolved": "2.66.0",
+        "contentHash": "GwkSsssXFgN9+M2U+UQWdErf61sn1iqgP+2NRBlDXATcP9vlxda0wySxd/eIL8U522+SnyFNUXlvQ5tAzGk9cA==",
         "dependencies": {
-          "Grpc.Net.Common": "2.65.0",
+          "Grpc.Net.Common": "2.66.0",
           "Microsoft.Extensions.Logging.Abstractions": "6.0.0"
         }
       },
@@ -107,10 +107,10 @@
       },
       "Grpc.Net.Common": {
         "type": "Transitive",
-        "resolved": "2.65.0",
-        "contentHash": "XbRegnfDrWoXZJ4GGdJat+KXnmCCkR6XQmWnIZxxIjphyZkWZgI0FN1PtGXU4RZ5a5C85qg1cscz1ju2biVXGg==",
+        "resolved": "2.66.0",
+        "contentHash": "YJpQpIvpo0HKlsG6SHwaieyji08qfv0DdEDIewCAA0egQY08637sHOj1netLGUhzBEsCqlGC3e92TZ2uqhxnvw==",
         "dependencies": {
-          "Grpc.Core.Api": "2.65.0"
+          "Grpc.Core.Api": "2.66.0"
         }
       },
       "Grpc.Tools": {
