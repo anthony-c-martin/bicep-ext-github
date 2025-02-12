@@ -8,6 +8,9 @@
     },
     "Label": {
       "$ref": "types.json#/12"
+    },
+    "ActionsSecret": {
+      "$ref": "types.json#/15"
     }
   },
   "resourceFunctions": {},

@@ -62,7 +62,7 @@
         "type": {
           "$ref": "#/2"
         },
-        "flags": 16,
+        "flags": 17,
         "description": "The owner of the repository"
       },
       "name": {
@@ -205,6 +205,60 @@
     "readOnlyScopes": null,
     "body": {
       "$ref": "#/11"
+    },
+    "flags": 0,
+    "functions": null
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true,
+    "minLength": null,
+    "maxLength": null,
+    "pattern": null
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActionsSecret",
+    "properties": {
+      "owner": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 17,
+        "description": "The owner of the repository"
+      },
+      "repo": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 17,
+        "description": "The repository"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 17,
+        "description": "The secret name"
+      },
+      "value": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The secret value"
+      }
+    },
+    "additionalProperties": null,
+    "sensitive": null
+  },
+  {
+    "$type": "ResourceType",
+    "name": "ActionsSecret",
+    "scopeType": 0,
+    "readOnlyScopes": null,
+    "body": {
+      "$ref": "#/14"
     },
     "flags": 0,
     "functions": null

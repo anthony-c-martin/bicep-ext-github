@@ -30,5 +30,12 @@ resource bugLabel 'Label' = {
   color: 'f29513'
 }
 
+resource secret 'ActionsSecret' = {
+  owner: owner
+  repo: repo.name
+  name: 'MY_SECRET'
+  value: 'super-secret-value'
+}
+
 output repo object = repo
 output collaborator object = collaborator

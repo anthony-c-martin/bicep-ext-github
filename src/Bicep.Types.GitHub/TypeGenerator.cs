@@ -28,7 +28,11 @@ public static class TypeGenerator
             var propertyType = property.PropertyType;
             TypeBase typeReference;
 
-            if (propertyType == typeof(string))
+            if (propertyType == typeof(string) && annotation?.IsSecure == true)
+            {
+                typeReference = factory.Create(() => new StringType(sensitive: true));
+            }
+            else if (propertyType == typeof(string))
             {
                 typeReference = typeCache.GetOrAdd(propertyType, _ => factory.Create(() => new StringType()));
             }
@@ -112,6 +116,7 @@ public static class TypeGenerator
             GenerateResource(factory, typeCache, typeof(Repository)),
             GenerateResource(factory, typeCache, typeof(Collaborator)),
             GenerateResource(factory, typeCache, typeof(Label)),
+            GenerateResource(factory, typeCache, typeof(ActionsSecret)),
         };
 
         var index = new TypeIndex(

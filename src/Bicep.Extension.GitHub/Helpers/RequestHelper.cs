@@ -22,9 +22,10 @@ public static class RequestHelper
         }
         catch (Exception exception)
         {
-            if (exception is ApiException apiException)
+            if (exception is ApiException apiException &&
+                apiException.ApiError?.Errors is {} apiErrors)
             {
-                var errorDetails = apiException.ApiError.Errors
+                var errorDetails = apiErrors
                     .Select(error => new ErrorDetail(error.Code, error.Field ?? "", error.Message)).ToArray();
 
                 return CreateErrorResponse("ApiError", apiException.ApiError.Message, errorDetails);
