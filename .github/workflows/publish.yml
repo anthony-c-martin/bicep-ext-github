@@ -1,4 +1,4 @@
-name: Publish Extensions
+name: Publish Extension
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
 
 env:
   CI: true
-  AZURE_REGISTRY_NAME: bicepextgithub
+  AZURE_REGISTRY_NAME: bicepextdemo
 
 jobs:
   deploy-acr:

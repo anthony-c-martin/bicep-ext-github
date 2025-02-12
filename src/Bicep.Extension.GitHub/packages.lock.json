@@ -35,9 +35,9 @@
       },
       "Microsoft.NET.ILLink.Tasks": {
         "type": "Direct",
-        "requested": "[8.0.8, )",
-        "resolved": "8.0.8",
-        "contentHash": "P8wR6MUWwYXIjPJuBaZgo5zlI/GWI6QEAo6NyVIbPefa9CCkohYu7dP2rD/mrqnjEqfRHyl+h9VZrDoGpELqYg=="
+        "requested": "[8.0.12, )",
+        "resolved": "8.0.12",
+        "contentHash": "FV4HnQ3JI15PHnJ5PGTbz+rYvrih42oLi/7UMIshNwCwUZhTq13UzrggtXk4ygrcMcN+4jsS6hhshx2p/Zd0ig=="
       },
       "Microsoft.SourceLink.GitHub": {
         "type": "Direct",
@@ -51,9 +51,9 @@
       },
       "Octokit": {
         "type": "Direct",
-        "requested": "[12.0.0, )",
-        "resolved": "12.0.0",
-        "contentHash": "7LAFFcirR/IaC84Uy+L1L+yqlYHxaMjHPt5GeLkB/GG0ujl7IgWWcL3VHMwMB3Y76Spsz0lMnPKub4EeosSljg=="
+        "requested": "[14.0.0, )",
+        "resolved": "14.0.0",
+        "contentHash": "jGOuTH1l+TCpJH+fwYOp7USzHDuGfN1jKbLz3J2COwyn+wL08eynvpnM6rY2qkzIEXum3PN2p2QkP3BW/p9Qcw=="
       },
       "CommandLineParser": {
         "type": "Transitive",
@@ -211,6 +211,13 @@
         "contentHash": "bAkhgDJ88XTsqczoxEMliSrpijKZHhbJQldhAmObj/RbrN3sU5dcokuXmWJWsdQAhiMJ9bTayWsL1C9fbbCRhw==",
         "dependencies": {
           "System.Text.Encodings.Web": "8.0.0"
+        }
+      },
+      "bicep.types.github": {
+        "type": "Project",
+        "dependencies": {
+          "Azure.Bicep.Types": "[0.5.9, )",
+          "CommandLineParser": "[2.9.1, )"
         }
       }
     },

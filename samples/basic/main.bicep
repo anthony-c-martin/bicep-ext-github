@@ -9,15 +9,25 @@ extension github with {
   token: githubToken
 }
 
-resource repo 'Repository' existing = {
+resource repo 'Repository' = {
   owner: owner
   name: repoName
+  description: 'Test bicep repository'
+  visibility: 'Public'
 }
 
-resource collaborator 'Collaborator' existing = {
+resource collaborator 'Collaborator' = {
   owner: owner
-  name: repoName
-  user:collaboratorName
+  repo: repo.name
+  user: collaboratorName
+}
+
+resource bugLabel 'Label' = {
+  owner: owner
+  repo: repo.name
+  name: 'bug'
+  description: 'Report a bug!'
+  color: 'f29513'
 }
 
 output repo object = repo

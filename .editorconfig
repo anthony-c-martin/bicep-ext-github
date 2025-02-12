@@ -9,9 +9,6 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-
-file_header_template = Copyright (c) Microsoft Corporation.\nLicensed under the MIT License.
-
 # Organize usings
 dotnet_separate_import_directive_groups = false
 dotnet_sort_system_directives_first = true

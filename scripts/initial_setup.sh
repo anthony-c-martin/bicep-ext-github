@@ -9,7 +9,7 @@ subId=${2:?"Missing subscriptionId. ${usage}"}
 
 repoOwner="anthony-c-martin"
 repoName="bicep-ext-github"
-rgName="bicepextgithub"
+rgName="bicepextdemo"
 rgLocation="East US 2"
 
 az account set -n "$subId"
@@ -17,7 +17,7 @@ az group create \
   --location "$rgLocation" \
   --name "$rgName" >/dev/null
 
-appCreate=$(az ad app create --display-name $rgName)
+appCreate=$(az ad app create --display-name $repoName)
 appId=$(echo $appCreate | jq -r '.appId')
 
 if [[ -z $(az ad sp show --id $appId 2>/dev/null) ]]; then

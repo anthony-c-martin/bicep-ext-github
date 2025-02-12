@@ -7,86 +7,6 @@
     "pattern": null
   },
   {
-    "$type": "StringType",
-    "sensitive": null,
-    "minLength": null,
-    "maxLength": null,
-    "pattern": null
-  },
-  {
-    "$type": "ObjectType",
-    "name": "body",
-    "properties": {
-      "owner": {
-        "type": {
-          "$ref": "#/1"
-        },
-        "flags": 17,
-        "description": null
-      },
-      "name": {
-        "type": {
-          "$ref": "#/1"
-        },
-        "flags": 17,
-        "description": null
-      }
-    },
-    "additionalProperties": null,
-    "sensitive": null
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Repository",
-    "scopeType": 0,
-    "readOnlyScopes": null,
-    "body": {
-      "$ref": "#/2"
-    },
-    "flags": 0,
-    "functions": null
-  },
-  {
-    "$type": "ObjectType",
-    "name": "body",
-    "properties": {
-      "owner": {
-        "type": {
-          "$ref": "#/1"
-        },
-        "flags": 17,
-        "description": null
-      },
-      "name": {
-        "type": {
-          "$ref": "#/1"
-        },
-        "flags": 17,
-        "description": null
-      },
-      "user": {
-        "type": {
-          "$ref": "#/1"
-        },
-        "flags": 17,
-        "description": null
-      }
-    },
-    "additionalProperties": null,
-    "sensitive": null
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Collaborator",
-    "scopeType": 0,
-    "readOnlyScopes": null,
-    "body": {
-      "$ref": "#/4"
-    },
-    "flags": 0,
-    "functions": null
-  },
-  {
     "$type": "ObjectType",
     "name": "configuration",
     "properties": {
@@ -100,5 +20,193 @@
     },
     "additionalProperties": null,
     "sensitive": null
+  },
+  {
+    "$type": "StringType",
+    "sensitive": null,
+    "minLength": null,
+    "maxLength": null,
+    "pattern": null
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Public"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Private"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Internal"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/3"
+      },
+      {
+        "$ref": "#/4"
+      },
+      {
+        "$ref": "#/5"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Repository",
+    "properties": {
+      "owner": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 16,
+        "description": "The owner of the repository"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 17,
+        "description": "The repository"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The repository description"
+      },
+      "homepage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The repository homepage url"
+      },
+      "visibility": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "The repository visibility"
+      }
+    },
+    "additionalProperties": null,
+    "sensitive": null
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Repository",
+    "scopeType": 0,
+    "readOnlyScopes": null,
+    "body": {
+      "$ref": "#/7"
+    },
+    "flags": 0,
+    "functions": null
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Collaborator",
+    "properties": {
+      "owner": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 17,
+        "description": "The owner of the repository"
+      },
+      "repo": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 17,
+        "description": "The repository"
+      },
+      "user": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": null
+      },
+      "permission": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": null
+      }
+    },
+    "additionalProperties": null,
+    "sensitive": null
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Collaborator",
+    "scopeType": 0,
+    "readOnlyScopes": null,
+    "body": {
+      "$ref": "#/9"
+    },
+    "flags": 0,
+    "functions": null
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Label",
+    "properties": {
+      "owner": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 17,
+        "description": "The owner of the repository"
+      },
+      "repo": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 17,
+        "description": "The repository"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 17,
+        "description": "The label name"
+      },
+      "color": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": null
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": null
+      }
+    },
+    "additionalProperties": null,
+    "sensitive": null
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Label",
+    "scopeType": 0,
+    "readOnlyScopes": null,
+    "body": {
+      "$ref": "#/11"
+    },
+    "flags": 0,
+    "functions": null
   }
 ]

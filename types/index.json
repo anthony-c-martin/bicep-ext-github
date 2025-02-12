@@ -1,10 +1,13 @@
 {
   "resources": {
     "Repository": {
-      "$ref": "types.json#/3"
+      "$ref": "types.json#/8"
     },
     "Collaborator": {
-      "$ref": "types.json#/5"
+      "$ref": "types.json#/10"
+    },
+    "Label": {
+      "$ref": "types.json#/12"
     }
   },
   "resourceFunctions": {},
@@ -13,7 +16,7 @@
     "version": "0.0.1",
     "isSingleton": true,
     "configurationType": {
-      "$ref": "types.json#/6"
+      "$ref": "types.json#/1"
     }
   },
   "fallbackResourceType": null

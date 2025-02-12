@@ -2,16 +2,87 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Immutable;
+using System.Reflection;
 using System.Text;
 using Azure.Bicep.Types;
 using Azure.Bicep.Types.Concrete;
 using Azure.Bicep.Types.Index;
 using Azure.Bicep.Types.Serialization;
+using Bicep.Types.Github.Models;
 
 namespace Bicep.Types.Github;
 
 public static class TypeGenerator
 {
+    public static string CamelCase(string input)
+        => $"{input[..1].ToLowerInvariant()}{input[1..]}";
+
+    public static TypeBase GenerateForRecord(TypeFactory factory, ConcurrentDictionary<Type, TypeBase> typeCache, Type type)
+    {
+        var typeProperties = new Dictionary<string, ObjectTypeProperty>();
+        foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        {
+            var annotation = property.GetCustomAttributes<TypeAnnotationAttribute>(true).FirstOrDefault();
+            var propertyType = property.PropertyType;
+            TypeBase typeReference;
+
+            if (propertyType == typeof(string))
+            {
+                typeReference = typeCache.GetOrAdd(propertyType, _ => factory.Create(() => new StringType()));
+            }
+            else if (propertyType == typeof(bool))
+            {
+                typeReference = typeCache.GetOrAdd(propertyType, _ => factory.Create(() => new BooleanType()));
+            }
+            else if (propertyType == typeof(int))
+            {
+                typeReference = typeCache.GetOrAdd(propertyType, _ => factory.Create(() => new IntegerType()));
+            }
+            else if (propertyType.IsClass)
+            {
+                typeReference = typeCache.GetOrAdd(propertyType, _ => factory.Create(() => GenerateForRecord(factory, typeCache, propertyType)));
+            }
+            else if (propertyType.IsGenericType &&
+                propertyType.GetGenericTypeDefinition() == typeof(Nullable<>) &&
+                propertyType.GetGenericArguments()[0] is { IsEnum: true } enumType)
+            {
+                var enumMembers = enumType.GetEnumNames()
+                    .Select(x => factory.Create(() => new StringLiteralType(x)))
+                    .Select(x => factory.GetReference(x))
+                    .ToImmutableArray();
+                
+                typeReference = typeCache.GetOrAdd(propertyType, _ => factory.Create(() => new UnionType(enumMembers)));
+            }
+            else
+            {
+                throw new NotImplementedException($"Unsupported property type {propertyType}");
+            }
+
+            typeProperties[CamelCase(property.Name)] = new ObjectTypeProperty(
+                factory.GetReference(typeReference),
+                annotation?.Flags ?? ObjectTypePropertyFlags.None,
+                annotation?.Description);
+        }
+
+        return new ObjectType(
+            type.Name,
+            typeProperties,
+            null);
+    }
+
+    public static ResourceType GenerateResource(TypeFactory factory, ConcurrentDictionary<Type, TypeBase> typeCache, Type type)
+    {
+        return factory.Create(() => new ResourceType(
+            type.Name,
+            ScopeType.Unknown,
+            null,
+            factory.GetReference(factory.Create(() => GenerateForRecord(factory, typeCache, type))),
+            ResourceFlags.None,
+            null));
+    }
+
     public static string GetString(Action<Stream> streamWriteFunc)
     {
         using var memoryStream = new MemoryStream();
@@ -23,38 +94,7 @@ public static class TypeGenerator
     public static Dictionary<string, string> GenerateTypes()
     {
         var factory = new TypeFactory([]);
-
         var secureStringType = factory.Create(() => new StringType(sensitive: true));
-        var stringType = factory.Create(() => new StringType());
-
-        var repositoryBodyType = factory.Create(() => new ObjectType("body", new Dictionary<string, ObjectTypeProperty>
-        {
-            ["owner"] = new(factory.GetReference(stringType), ObjectTypePropertyFlags.Required | ObjectTypePropertyFlags.Identifier, null),
-            ["name"] = new(factory.GetReference(stringType), ObjectTypePropertyFlags.Required | ObjectTypePropertyFlags.Identifier, null),
-        }, null));
-
-        var repositoryType = factory.Create(() => new ResourceType(
-            "Repository",
-            ScopeType.Unknown,
-            null,
-            factory.GetReference(repositoryBodyType),
-            ResourceFlags.None,
-            null));
-
-        var collaboratorBodyType = factory.Create(() => new ObjectType("body", new Dictionary<string, ObjectTypeProperty>
-        {
-            ["owner"] = new(factory.GetReference(stringType), ObjectTypePropertyFlags.Required | ObjectTypePropertyFlags.Identifier, null),
-            ["name"] = new(factory.GetReference(stringType), ObjectTypePropertyFlags.Required | ObjectTypePropertyFlags.Identifier, null),
-            ["user"] = new(factory.GetReference(stringType), ObjectTypePropertyFlags.Required | ObjectTypePropertyFlags.Identifier, null),
-        }, null));
-
-        var collaboratorType = factory.Create(() => new ResourceType(
-            "Collaborator",
-            ScopeType.Unknown,
-            null,
-            factory.GetReference(collaboratorBodyType),
-            ResourceFlags.None,
-            null));
 
         var configurationType = factory.Create(() => new ObjectType("configuration", new Dictionary<string, ObjectTypeProperty>
         {
@@ -67,9 +107,11 @@ public static class TypeGenerator
             isSingleton: true,
             configurationType: new CrossFileTypeReference("types.json", factory.GetIndex(configurationType)));
 
+        var typeCache = new ConcurrentDictionary<Type, TypeBase>();
         var resourceTypes = new[] {
-            repositoryType,
-            collaboratorType,
+            GenerateResource(factory, typeCache, typeof(Repository)),
+            GenerateResource(factory, typeCache, typeof(Collaborator)),
+            GenerateResource(factory, typeCache, typeof(Label)),
         };
 
         var index = new TypeIndex(

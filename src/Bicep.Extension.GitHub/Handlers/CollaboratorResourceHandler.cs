@@ -1,65 +1,46 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using Bicep.Local.Extension.Protocol;
 using Octokit;
 
 namespace Bicep.Extension.Github.Handlers;
 
-public class CollaboratorResourceHandler : ResourceHandlerBase
+public class CollaboratorResourceHandler : IResourceHandler
 {
-    public override string ResourceType => "Collaborator";
+    public string ResourceType => "Collaborator";
 
-    private static (string owner, string name, string user) GetIdentifiers(JsonObject properties)
-    {
-        return new(
-            properties["owner"]!.GetValue<string>(),
-            properties["name"]!.GetValue<string>(),
-            properties["user"]!.GetValue<string>());
-    }
+    private record Identifiers(
+        string? Owner,
+        string? Repo,
+        string? User);
 
-    private static JsonObject GetIdentifiersObject(string owner, string name, string user)
-        => new()
-        {
-            ["owner"] = owner,
-            ["name"] = name,
-            ["user"] = user
-        };
-
-    protected override Task<LocalExtensibilityOperationResponse> Delete(GitHubClient client, ResourceReference request, CancellationToken cancellationToken)
+    public Task<LocalExtensibilityOperationResponse> Delete(ResourceReference request, CancellationToken cancellationToken)
         => throw new NotImplementedException();
 
-    protected override async Task<LocalExtensibilityOperationResponse> Get(GitHubClient client, ResourceReference request, CancellationToken cancellationToken)
-    {
-        var (owner, name, user) = GetIdentifiers(request.Identifiers);
+    public Task<LocalExtensibilityOperationResponse> Get(ResourceReference request, CancellationToken cancellationToken)
+        => throw new NotImplementedException();
 
-        var response = await client.Connection.Get<object>(ApiUrls.RepoCollaborator(owner, name, user), null);
-        var body = JsonNode.Parse(response.Body.ToString()!) as JsonObject;
+    public Task<LocalExtensibilityOperationResponse> Preview(ResourceSpecification request, CancellationToken cancellationToken)
+        => RequestHelper.HandleRequest(request.Config, async client => {
+            var properties = RequestHelper.GetProperties<Types.Github.Models.Collaborator>(request.Properties);
+            
+            await Task.Yield();
 
-        return new(
-            new(request.Type, request.ApiVersion, "Succeeded", request.Identifiers, request.Config, body!),
-            null);
-    }
+            return RequestHelper.CreateSuccessResponse(request, properties, new Identifiers(properties.Owner, properties.Repo, properties.User));
+        });
 
-    protected override async Task<LocalExtensibilityOperationResponse> Preview(GitHubClient client, ResourceSpecification request, CancellationToken cancellationToken)
-    {
-        await Task.Yield();
-        var (owner, name, user) = GetIdentifiers(request.Properties);
+    public Task<LocalExtensibilityOperationResponse> CreateOrUpdate(ResourceSpecification request, CancellationToken cancellationToken)
+        => RequestHelper.HandleRequest(request.Config, async client => {
+            var properties = RequestHelper.GetProperties<Types.Github.Models.Collaborator>(request.Properties);
 
-        return new(
-            new(request.Type, request.ApiVersion, "Succeeded", GetIdentifiersObject(owner, name, user), request.Config, GetIdentifiersObject(owner, name, user)),
-            null);
-    }
+            await client.Repository.Collaborator.Add(
+                properties.Owner,
+                properties.Repo,
+                properties.User,
+                new(properties.Permission));
 
-    protected override async Task<LocalExtensibilityOperationResponse> CreateOrUpdate(GitHubClient client, ResourceSpecification request, CancellationToken cancellationToken)
-    {
-        var (owner, name, user) = GetIdentifiers(request.Properties);
-
-        var response = await client.Connection.Put<object>(ApiUrls.RepoCollaborator(owner, name, user), null);
-        var body = JsonNode.Parse(response.Body.ToString()!) as JsonObject;
-
-        return new(
-            new(request.Type, request.ApiVersion, "Succeeded", GetIdentifiersObject(owner, name, user), request.Config, body!),
-            null);
-    }
+            return RequestHelper.CreateSuccessResponse(request, properties, new Identifiers(properties.Owner, properties.Repo, properties.User));
+        });
 }
