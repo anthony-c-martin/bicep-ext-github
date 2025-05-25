@@ -1,3 +1,5 @@
+targetScope = 'local'
+
 @secure()
 param githubToken string
 
