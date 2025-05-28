@@ -130,8 +130,8 @@
         "type": {
           "$ref": "#/2"
         },
-        "flags": 0,
-        "description": null
+        "flags": 17,
+        "description": "The collaborator user handle"
       },
       "permission": {
         "type": {

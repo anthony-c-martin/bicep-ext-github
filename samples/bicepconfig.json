@@ -8,7 +8,7 @@
     "currentProfile": "AzureCloud"
   },
   "extensions": {
-    "github": "br:bicepextdemo.azurecr.io/extensions/github:0.1.6"
+    "github": "br:bicepextdemo.azurecr.io/extensions/github:0.1.7"
   },
   "implicitExtensions": []
 }

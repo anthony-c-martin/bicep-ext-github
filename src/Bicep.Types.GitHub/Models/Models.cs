@@ -63,6 +63,7 @@ public class Collaborator
     [TypeAnnotation("The repository", ObjectTypePropertyFlags.Identifier | ObjectTypePropertyFlags.Required)]
     public string? Repo { get; set; }
 
+    [TypeAnnotation("The collaborator user handle", ObjectTypePropertyFlags.Identifier | ObjectTypePropertyFlags.Required)]
     public string? User { get; set; }
 
     public string? Permission { get; set; }
