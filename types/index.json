@@ -11,6 +11,9 @@
     },
     "ActionsSecret": {
       "$ref": "types.json#/15"
+    },
+    "ActionsVariable": {
+      "$ref": "types.json#/17"
     }
   },
   "resourceFunctions": {},

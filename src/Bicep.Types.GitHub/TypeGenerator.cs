@@ -117,6 +117,7 @@ public static class TypeGenerator
             GenerateResource(factory, typeCache, typeof(Collaborator)),
             GenerateResource(factory, typeCache, typeof(Label)),
             GenerateResource(factory, typeCache, typeof(ActionsSecret)),
+            GenerateResource(factory, typeCache, typeof(ActionsVariable)),
         };
 
         var index = new TypeIndex(

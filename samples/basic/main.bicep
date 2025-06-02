@@ -39,5 +39,13 @@ resource secret 'ActionsSecret' = {
   value: 'super-secret-value'
 }
 
+resource variable 'ActionsVariable' = {
+  owner: owner
+  repo: repoName
+  name: 'MY_VARIABLE'
+  value: 'just-another-value'
+}
+
 output repo object = repo
 output collaborator object = collaborator
+output variable object = variable
