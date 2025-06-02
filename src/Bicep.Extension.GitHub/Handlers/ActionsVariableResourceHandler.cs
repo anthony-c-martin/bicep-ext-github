@@ -36,10 +36,20 @@ public class ActionsVariableResourceHandler : IResourceHandler
         => RequestHelper.HandleRequest(request.Config, async client => {
             var properties = RequestHelper.GetProperties<Types.Github.Models.ActionsVariable>(request.Properties);
 
-            await client.Repository.Actions.Variables.Create(
-                properties.Owner,
-                properties.Repo,
-                new(properties.Name, properties.Value));
+            try
+            {
+                await client.Repository.Actions.Variables.Create(
+                    properties.Owner,
+                    properties.Repo,
+                    new(properties.Name, properties.Value));
+            }
+            catch (ApiException ex) when (ex is { StatusCode: System.Net.HttpStatusCode.Conflict })
+            {
+                await client.Repository.Actions.Variables.Update(
+                    properties.Owner,
+                    properties.Repo,
+                    new(properties.Name, properties.Value));
+            }
 
             return RequestHelper.CreateSuccessResponse(request, properties, new Identifiers(properties.Owner, properties.Repo, properties.Name));
         });
