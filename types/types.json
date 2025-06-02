@@ -262,5 +262,52 @@
     },
     "flags": 0,
     "functions": null
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActionsVariable",
+    "properties": {
+      "owner": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 17,
+        "description": "The owner of the repository"
+      },
+      "repo": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 17,
+        "description": "The repository"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 17,
+        "description": "The variable name"
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The variable value"
+      }
+    },
+    "additionalProperties": null,
+    "sensitive": null
+  },
+  {
+    "$type": "ResourceType",
+    "name": "ActionsVariable",
+    "scopeType": 0,
+    "readOnlyScopes": null,
+    "body": {
+      "$ref": "#/16"
+    },
+    "flags": 0,
+    "functions": null
   }
 ]

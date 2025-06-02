@@ -99,3 +99,18 @@ public class ActionsSecret
     [TypeAnnotation("The secret value", ObjectTypePropertyFlags.Required, isSecure: true)]
     public string? Value { get; set; }
 }
+
+public class ActionsVariable
+{
+    [TypeAnnotation("The owner of the repository", ObjectTypePropertyFlags.Identifier | ObjectTypePropertyFlags.Required)]
+    public string? Owner { get; set; }
+
+    [TypeAnnotation("The repository", ObjectTypePropertyFlags.Identifier | ObjectTypePropertyFlags.Required)]
+    public string? Repo { get; set; }
+
+    [TypeAnnotation("The variable name", ObjectTypePropertyFlags.Identifier | ObjectTypePropertyFlags.Required)]
+    public string? Name { get; set; }
+
+    [TypeAnnotation("The variable value", ObjectTypePropertyFlags.Required, isSecure: false)]
+    public string? Value { get; set; }
+}
