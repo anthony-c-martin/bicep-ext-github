@@ -14,8 +14,8 @@ dotnet publish --configuration Release $root -r win-x64
 
 # publish to the registry
 ~/.azure/bin/bicep publish-extension \
-  --bin-osx-arm64 "$root/src/bin/Release/osx-arm64/publish/$ext_name" \
-  --bin-linux-x64 "$root/src/bin/Release/linux-x64/publish/$ext_name" \
-  --bin-win-x64 "$root/src/bin/Release/win-x64/publish/$ext_name.exe" \
+  --bin-osx-arm64 "$root/src/bin/Release/net9.0/osx-arm64/publish/$ext_name" \
+  --bin-linux-x64 "$root/src/bin/Release/net9.0/linux-x64/publish/$ext_name" \
+  --bin-win-x64 "$root/src/bin/Release/net9.0/win-x64/publish/$ext_name.exe" \
   --target "$target" \
   --force
