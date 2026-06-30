@@ -20,7 +20,13 @@ builder.Services
     .WithResourceHandler<CollaboratorHandler>()
     .WithResourceHandler<LabelHandler>()
     .WithResourceHandler<ActionsSecretHandler>()
-    .WithResourceHandler<ActionsVariableHandler>();
+    .WithResourceHandler<ActionsVariableHandler>()
+    .WithResourceHandler<BranchProtectionRuleHandler>()
+    .WithResourceHandler<RepositoryRulesetHandler>()
+    .WithResourceHandler<TeamRepositoryPermissionHandler>()
+    .WithResourceHandler<EnvironmentHandler>()
+    .WithResourceHandler<RepositoryWebhookHandler>()
+    .WithResourceHandler<DeployKeyHandler>();
 
 var app = builder.Build();
 app.MapBicepExtension();
