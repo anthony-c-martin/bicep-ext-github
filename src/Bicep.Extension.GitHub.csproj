@@ -7,20 +7,20 @@
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <RuntimeIdentifiers>win-x64;win-arm64;osx-x64;osx-arm64;linux-x64;linux-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x64;win-arm64;osx-arm64;linux-x64;linux-arm64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Bicep.Local.Extension" Version="0.37.4" />
-    <PackageReference Include="Bicep.LocalDeploy" Version="0.1.3" />
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.7.112" />
+    <PackageReference Include="Azure.Bicep.Local.Extension" Version="0.44.1" />
+    <PackageReference Include="Bicep.LocalDeploy" Version="1.0.1" />
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.10.85" />
     <PackageReference Include="Octokit" Version="14.0.0" />
-    <PackageReference Include="Sodium.Core" Version="1.4.0" />
+    <PackageReference Include="Sodium.Core" Version="1.4.1" />
   </ItemGroup>
 </Project>

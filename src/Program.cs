@@ -9,12 +9,13 @@ var builder = WebApplication.CreateBuilder();
 
 builder.AddBicepExtensionHost(args);
 builder.Services
-    .AddBicepExtension(
+    .AddBicepExtension()
+    .WithDefaults(
         name: ThisAssembly.AssemblyName.Split('-')[^1],
         version: ThisAssembly.AssemblyInformationalVersion.Split('+')[0],
-        isSingleton: true,
-        typeAssembly: typeof(Program).Assembly,
-        configurationType: typeof(Configuration))
+        isSingleton: true)
+    .WithTypeAssembly(typeof(Program).Assembly)
+    .WithConfigurationType(typeof(Configuration))
     .WithResourceHandler<RepositoryHandler>()
     .WithResourceHandler<CollaboratorHandler>()
     .WithResourceHandler<LabelHandler>()

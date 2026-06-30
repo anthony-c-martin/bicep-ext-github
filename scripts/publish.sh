@@ -10,12 +10,16 @@ ext_name="bicep-ext-github"
 # build various flavors
 dotnet publish --configuration Release $root -r osx-arm64
 dotnet publish --configuration Release $root -r linux-x64
+dotnet publish --configuration Release $root -r linux-arm64
 dotnet publish --configuration Release $root -r win-x64
+dotnet publish --configuration Release $root -r win-arm64
 
 # publish to the registry
 ~/.azure/bin/bicep publish-extension \
-  --bin-osx-arm64 "$root/src/bin/Release/net9.0/osx-arm64/publish/$ext_name" \
-  --bin-linux-x64 "$root/src/bin/Release/net9.0/linux-x64/publish/$ext_name" \
-  --bin-win-x64 "$root/src/bin/Release/net9.0/win-x64/publish/$ext_name.exe" \
+  --bin-osx-arm64 "$root/src/bin/Release/net10.0/osx-arm64/publish/$ext_name" \
+  --bin-linux-x64 "$root/src/bin/Release/net10.0/linux-x64/publish/$ext_name" \
+  --bin-linux-arm64 "$root/src/bin/Release/net10.0/linux-arm64/publish/$ext_name" \
+  --bin-win-x64 "$root/src/bin/Release/net10.0/win-x64/publish/$ext_name.exe" \
+  --bin-win-arm64 "$root/src/bin/Release/net10.0/win-arm64/publish/$ext_name.exe" \
   --target "$target" \
   --force
