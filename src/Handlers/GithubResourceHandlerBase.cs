@@ -19,7 +19,7 @@ public abstract class GithubResourceHandlerBase<TProperties, TIdentifiers> : Typ
         }
         catch (ApiException exception) when (exception.ApiError is { } apiError)
         {
-            var errorDetails = apiError.Errors
+            var errorDetails = (apiError.Errors ?? [])
                 .Select(error => new ErrorDetail
                 {
                     Code = error.Code,
@@ -28,6 +28,30 @@ public abstract class GithubResourceHandlerBase<TProperties, TIdentifiers> : Typ
                 });
 
             throw new ResourceErrorException("ApiError", apiError.Message, details: [..errorDetails]);
+        }
+        catch (ApiException exception)
+        {
+            throw new ResourceErrorException(
+                "GitHubApiError",
+                $"GitHub API request failed with status {(int)exception.StatusCode}: {exception.Message}");
+        }
+        catch (ResourceErrorException)
+        {
+            throw;
+        }
+        catch (Exception exception)
+        {
+            throw new ResourceErrorException(
+                "UnhandledException",
+                exception.Message,
+                details:
+                [
+                    new ErrorDetail
+                    {
+                        Code = exception.GetType().Name,
+                        Message = exception.ToString(),
+                    }
+                ]);
         }
     }
 }
