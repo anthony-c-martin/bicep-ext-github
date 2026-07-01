@@ -3,11 +3,13 @@
     "localDeploy": true
   },
   "cloud": {
-    "credentialPrecedence": ["Environment"],
+    "credentialPrecedence": ["AzureCLI"],
     "currentProfile": "AzureCloud"
   },
   "extensions": {
-    "github": "br:bicepextdemo.azurecr.io/extensions/github:0.1.29"
+    "local": "br:bicepextdemo.azurecr.io/extensions/local:0.1.15",
+    "github": "br:bicepextdemo.azurecr.io/extensions/github:0.1.29",
+    "msGraph": "br:mcr.microsoft.com/bicep/extensions/microsoftgraph/v1.0:1.0.0"
   },
   "implicitExtensions": []
 }

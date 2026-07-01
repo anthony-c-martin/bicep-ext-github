@@ -19,6 +19,7 @@ resource repo 'Repository' = {
   name: repoName
   description: 'Test bicep repository'
   visibility: 'Public'
+  allowSquashMerge: true
 }
 
 resource collaborator 'Collaborator' = {
