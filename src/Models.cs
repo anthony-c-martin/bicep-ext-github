@@ -363,7 +363,7 @@ public class RepositoryRulesetBypassActor
 {
   [JsonPropertyName("actor_id")]
   [TypeProperty("The ID of the actor")]
-  public long ActorId { get; set; }
+  public int ActorId { get; set; }
 
   [JsonPropertyName("actor_type")]
   [TypeProperty("The type of actor (OrganizationAdmin, RepositoryRole, Team, or Integration)")]
@@ -433,7 +433,7 @@ public class Environment : EnvironmentIdentifiers
 public class EnvironmentReviewer
 {
   [TypeProperty("The ID of the reviewer (user ID or team ID)")]
-  public long Id { get; set; }
+  public int Id { get; set; }
 
   [TypeProperty("The type of reviewer (User or Team)")]
   public string Type { get; set; } = "User";
