@@ -3,7 +3,7 @@
     "localDeploy": true
   },
   "cloud": {
-    "credentialPrecedence": ["AzureCLI"],
+    "credentialPrecedence": ["Environment"],
     "currentProfile": "AzureCloud"
   },
   "extensions": {

@@ -492,6 +492,40 @@ public class DeployKey : DeployKeyIdentifiers
   public bool ReadOnly { get; set; } = true;
 }
 
+public class GitHubFileIdentifiers
+{
+  [TypeProperty("The owner of the repository", ObjectTypePropertyFlags.Identifier | ObjectTypePropertyFlags.Required)]
+  public required string Owner { get; set; }
+
+  [TypeProperty("The repository", ObjectTypePropertyFlags.Identifier | ObjectTypePropertyFlags.Required)]
+  public required string Repo { get; set; }
+
+  [TypeProperty("The file path in the repository", ObjectTypePropertyFlags.Identifier | ObjectTypePropertyFlags.Required)]
+  public required string Path { get; set; }
+}
+
+[ResourceType("GitHubFile")]
+public class GitHubFile : GitHubFileIdentifiers
+{
+  [TypeProperty("The file content", ObjectTypePropertyFlags.Required)]
+  public required string Content { get; set; }
+
+  [TypeProperty("Optional branch name. Defaults to the repository default branch")]
+  public string? Branch { get; set; }
+
+  [TypeProperty("Optional commit message")]
+  public string? CommitMessage { get; set; }
+
+  [TypeProperty("The current blob SHA", ObjectTypePropertyFlags.ReadOnly)]
+  public string? Sha { get; set; }
+
+  [TypeProperty("The file HTML URL", ObjectTypePropertyFlags.ReadOnly)]
+  public string? HtmlUrl { get; set; }
+
+  [TypeProperty("The direct download URL", ObjectTypePropertyFlags.ReadOnly)]
+  public string? DownloadUrl { get; set; }
+}
+
 public class Configuration
 {
     [TypeProperty("The GitHub personal access token with the required permissions", ObjectTypePropertyFlags.Required, isSecure: true)]

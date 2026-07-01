@@ -26,7 +26,8 @@ builder.Services
     .WithResourceHandler<TeamRepositoryPermissionHandler>()
     .WithResourceHandler<EnvironmentHandler>()
     .WithResourceHandler<RepositoryWebhookHandler>()
-    .WithResourceHandler<DeployKeyHandler>();
+    .WithResourceHandler<DeployKeyHandler>()
+    .WithResourceHandler<GitHubFileHandler>();
 
 var app = builder.Build();
 app.MapBicepExtension();
