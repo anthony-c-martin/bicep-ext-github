@@ -48,6 +48,7 @@ public class RepositoryHandler : GithubResourceHandlerBase<Repository, Repositor
                         AllowRebaseMerge = request.Properties.AllowRebaseMerge,
                         DeleteBranchOnMerge = request.Properties.DeleteBranchOnMerge,
                         AllowAutoMerge = request.Properties.AllowAutoMerge,
+                        AllowUpdateBranch = request.Properties.AllowUpdateBranch,
                     });
             }
             catch (NotFoundException)

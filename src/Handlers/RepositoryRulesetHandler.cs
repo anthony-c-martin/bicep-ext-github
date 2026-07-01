@@ -51,7 +51,12 @@ public class RepositoryRulesetHandler : GithubResourceHandlerBase<RepositoryRule
                 ["rules"] = JsonSerializer.SerializeToNode(request.Properties.Rules),
             };
 
-            if (!string.IsNullOrWhiteSpace(request.Properties.BypassActorsJson))
+            // Support both typed BypassActors array and legacy BypassActorsJson
+            if (request.Properties.BypassActors is { Length: > 0 })
+            {
+                payload["bypass_actors"] = JsonSerializer.SerializeToNode(request.Properties.BypassActors);
+            }
+            else if (!string.IsNullOrWhiteSpace(request.Properties.BypassActorsJson))
             {
                 payload["bypass_actors"] = ParseRequiredJsonArray(request.Properties.BypassActorsJson, "bypassActorsJson");
             }

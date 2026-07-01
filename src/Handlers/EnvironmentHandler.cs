@@ -19,16 +19,39 @@ public class EnvironmentHandler : GithubResourceHandlerBase<Environment, Environ
         => HandleRequest(request, async _ =>
         {
             var path = $"repos/{request.Properties.Owner}/{request.Properties.Repo}/environments/{Uri.EscapeDataString(request.Properties.Name)}";
+            
+            var deploymentBranchPolicy = new JsonObject
+            {
+                ["protected_branches"] = request.Properties.ProtectedBranches,
+                ["custom_branch_policies"] = request.Properties.CustomBranchPolicies,
+            };
+            
+            if (request.Properties.DeploymentBranchPolicyEnvironments is { Length: > 0 })
+            {
+                deploymentBranchPolicy["environments"] = JsonNode.Parse(
+                    JsonSerializer.Serialize(request.Properties.DeploymentBranchPolicyEnvironments));
+            }
+
             var payload = new JsonObject
             {
                 ["wait_timer"] = request.Properties.WaitTimer,
                 ["prevent_self_review"] = request.Properties.PreventSelfReview,
-                ["deployment_branch_policy"] = new JsonObject
-                {
-                    ["protected_branches"] = request.Properties.ProtectedBranches,
-                    ["custom_branch_policies"] = request.Properties.CustomBranchPolicies,
-                },
+                ["deployment_branch_policy"] = deploymentBranchPolicy,
             };
+
+            if (request.Properties.Reviewers is { Length: > 0 })
+            {
+                var reviewersArray = new JsonArray();
+                foreach (var reviewer in request.Properties.Reviewers)
+                {
+                    reviewersArray.Add(new JsonObject
+                    {
+                        ["id"] = reviewer.Id,
+                        ["type"] = reviewer.Type,
+                    });
+                }
+                payload["reviewers"] = reviewersArray;
+            }
 
             using var httpClient = CreateClient(request.Config!.Token);
             using var response = await httpClient.PutAsync(path, BuildContent(payload), cancellationToken);

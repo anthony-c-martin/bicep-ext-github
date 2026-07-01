@@ -87,6 +87,9 @@ public class Repository : RepositoryIdentifiers
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public Visibility? Visibility { get; set; }
 
+    [TypeProperty("Topics for the repository")]
+    public string[]? Topics { get; set; }
+
     [TypeProperty("Whether the repository has issues enabled")]
     public bool HasIssues { get; set; }
 
@@ -116,6 +119,9 @@ public class Repository : RepositoryIdentifiers
 
     [TypeProperty("Whether to allow auto-merge")]
     public bool AllowAutoMerge { get; set; }
+
+    [TypeProperty("Whether to allow updating pull request branches")]
+    public bool AllowUpdateBranch { get; set; }
 }
 
 public class CollaboratorIdentifiers
@@ -539,7 +545,10 @@ public class RepositoryRuleset : RepositoryRulesetIdentifiers
   [TypeProperty("The ruleset rules", ObjectTypePropertyFlags.Required)]
   public required RepositoryRulesetRule[] Rules { get; set; }
 
-  [TypeProperty("Optional JSON array string for bypass actors")]
+  [TypeProperty("Actors that can bypass the ruleset")]
+  public RepositoryRulesetBypassActor[]? BypassActors { get; set; }
+
+  [TypeProperty("Optional JSON array string for bypass actors (deprecated: use bypassActors)")]
   public string? BypassActorsJson { get; set; }
 }
 
@@ -595,6 +604,72 @@ public class RepositoryRulesetPullRequestRuleParameters
   public bool? RequiredReviewThreadResolution { get; set; }
 }
 
+public class RepositoryRulesetCommitMessageRuleParameters
+{
+  [JsonPropertyName("operator")]
+  [TypeProperty("The operator for the pattern (contains or starts_with)")]
+  public string? Operator { get; set; }
+
+  [JsonPropertyName("pattern")]
+  [TypeProperty("The pattern for commit messages")]
+  public string? Pattern { get; set; }
+}
+
+public class RepositoryRulesetCommitAuthorRuleParameters
+{
+  [JsonPropertyName("operator")]
+  [TypeProperty("The operator for the pattern (contains or starts_with)")]
+  public string? Operator { get; set; }
+
+  [JsonPropertyName("pattern")]
+  [TypeProperty("The pattern for commit author")]
+  public string? Pattern { get; set; }
+}
+
+public class RepositoryRulesetBranchNamePatternRuleParameters
+{
+  [JsonPropertyName("operator")]
+  [TypeProperty("The operator for the pattern (contains or starts_with)")]
+  public string? Operator { get; set; }
+
+  [JsonPropertyName("pattern")]
+  [TypeProperty("The pattern for branch names")]
+  public string? Pattern { get; set; }
+}
+
+public class RepositoryRulesetTagNamePatternRuleParameters
+{
+  [JsonPropertyName("operator")]
+  [TypeProperty("The operator for the pattern (contains or starts_with)")]
+  public string? Operator { get; set; }
+
+  [JsonPropertyName("pattern")]
+  [TypeProperty("The pattern for tag names")]
+  public string? Pattern { get; set; }
+}
+
+public class RepositoryRulesetRequiredDeploymentsRuleParameters
+{
+  [JsonPropertyName("required_deployment_environments")]
+  [TypeProperty("List of environments that must be successfully deployed")]
+  public string[]? RequiredDeploymentEnvironments { get; set; }
+}
+
+public class RepositoryRulesetBypassActor
+{
+  [JsonPropertyName("actor_id")]
+  [TypeProperty("The ID of the actor")]
+  public long ActorId { get; set; }
+
+  [JsonPropertyName("actor_type")]
+  [TypeProperty("The type of actor (OrganizationAdmin, RepositoryRole, Team, or Integration)")]
+  public string? ActorType { get; set; }
+
+  [JsonPropertyName("bypass_mode")]
+  [TypeProperty("The bypass mode (always or pull_request)")]
+  public string? BypassMode { get; set; }
+}
+
 public class TeamRepositoryPermissionIdentifiers
 {
   [TypeProperty("The organization that owns the team", ObjectTypePropertyFlags.Identifier | ObjectTypePropertyFlags.Required)]
@@ -643,6 +718,21 @@ public class Environment : EnvironmentIdentifiers
 
   [TypeProperty("Whether custom branch policies can deploy")]
   public bool CustomBranchPolicies { get; set; }
+
+  [TypeProperty("Deployment reviewers for this environment")]
+  public EnvironmentReviewer[]? Reviewers { get; set; }
+
+  [TypeProperty("Alternative environment names allowed for deployment")]
+  public string[]? DeploymentBranchPolicyEnvironments { get; set; }
+}
+
+public class EnvironmentReviewer
+{
+  [TypeProperty("The ID of the reviewer (user ID or team ID)")]
+  public long Id { get; set; }
+
+  [TypeProperty("The type of reviewer (User or Team)")]
+  public string Type { get; set; } = "User";
 }
 
 public class RepositoryWebhookIdentifiers

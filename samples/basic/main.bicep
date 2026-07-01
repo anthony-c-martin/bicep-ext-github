@@ -3,6 +3,9 @@ targetScope = 'local'
 @secure()
 param githubToken string
 
+@secure()
+param sampleSecretValue string
+
 param owner string
 param repoName string
 param collaboratorName string
@@ -36,7 +39,7 @@ resource secret 'ActionsSecret' = {
   owner: owner
   repo: repo.name
   name: 'MY_SECRET'
-  value: 'super-secret-value'
+  value: sampleSecretValue
 }
 
 resource variable 'ActionsVariable' = {
