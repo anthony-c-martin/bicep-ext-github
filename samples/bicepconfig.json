@@ -1,6 +1,7 @@
 {
   "experimentalFeaturesEnabled": {
-    "localDeploy": true
+    "localDeploy": true,
+    "ociEnabled": true
   },
   "cloud": {
     "credentialPrecedence": ["AzureCLI"],
@@ -8,7 +9,7 @@
   },
   "extensions": {
     "local": "br:bicepextdemo.azurecr.io/extensions/local:0.1.15",
-    "github": "br:bicepextdemo.azurecr.io/extensions/github:0.1.29",
+    "github": "br:ghcr.io/anthony-c-martin/bicep-ext-github:0.1.31",
     "msGraph": "br:mcr.microsoft.com/bicep/extensions/microsoftgraph/v1.0:1.0.0"
   },
   "implicitExtensions": []

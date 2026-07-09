@@ -1,0 +1,52 @@
+name: Publish Extension (GHCR)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  packages: write
+
+env:
+  CI: true
+
+jobs:
+  publish-extension:
+    name: Publish Extension
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+          submodules: true
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+
+      - name: Install Bicep CLI
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash <(curl -Ls https://aka.ms/bicep/nightly-cli.sh)
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ github.token }}
+      
+      - name: Run nbgv
+        id: nbgv
+        uses: dotnet/nbgv@v0.4.2
+        
+      - name: Publish Extension
+        run: |
+          target="br:ghcr.io/${{ github.repository }}:${{ steps.nbgv.outputs.SimpleVersion }}"
+          bash ../scripts/publish.sh $target
+
+          echo "Published extension \`$target\`." >> $GITHUB_STEP_SUMMARY
+        working-directory: ./samples
