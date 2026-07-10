@@ -8,7 +8,7 @@
     "currentProfile": "AzureCloud"
   },
   "extensions": {
-    "local": "br:bicepextdemo.azurecr.io/extensions/local:0.1.15",
+    "local": "br:ghcr.io/anthony-c-martin/bicep-ext-local:0.1.21",
     "github": "br:ghcr.io/anthony-c-martin/bicep-ext-github:0.1.31",
     "msGraph": "br:mcr.microsoft.com/bicep/extensions/microsoftgraph/v1.0:1.0.0"
   },
