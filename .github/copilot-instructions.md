@@ -22,6 +22,6 @@ To iterate on changes to the extensions (e.g. changing or adding models or handl
     ```
 * Check the samples for warnings or errors by running `bicep lint --pattern './samples/**/*.bicepparam'`. Note that the error code BCP427 is expected, as expected env variables are not set - ignore this.
 
-To verify that the extension actually works end-to-end, ask the user to select a sample to run, and be very clear that this will actually interact with the external environment, and can potentially be destructive.
+To verify that the extension actually works end-to-end, ask the user to select a sample to run, and be very clear that this will actually interact with the external environment, and can potentially be destructive. If running into errors, it should be possible to troubleshoot by turning on verbose tracing with the env var `BICEP_TRACING_ENABLED` set to `true`.
 
 After making changes, if relevant, add or update samples.
