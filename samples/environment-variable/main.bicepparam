@@ -1,0 +1,11 @@
+using 'main.bicep'
+
+// Use the following to set the token:
+// export GITHUB_TOKEN=$(gh auth token)
+param githubToken = readEnvironmentVariable('GITHUB_TOKEN')
+
+param owner = 'anthony-c-martin'
+param repoName = 'testing-repo'
+param environmentName = 'production'
+param variableName = 'MY_ENV_VARIABLE'
+param variableValue = 'example-value'

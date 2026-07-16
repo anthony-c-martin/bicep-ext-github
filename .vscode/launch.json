@@ -6,7 +6,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "Build Solution",
-      "program": "${workspaceFolder}/src/bin/Debug/bicep-ext-github",
+      "program": "${workspaceFolder}/src/Bicep.Extension.GitHub/bin/Debug/bicep-ext-github",
       "args": [
         "--http",
         "8080"

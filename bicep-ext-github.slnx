@@ -1,3 +1,4 @@
-﻿<Solution>
-  <Project Path="src/Bicep.Extension.GitHub.csproj" />
+<Solution>
+  <Project Path="src/Bicep.Extension.GitHub.Tests/Bicep.Extension.GitHub.Tests.csproj" />
+  <Project Path="src/Bicep.Extension.GitHub/Bicep.Extension.GitHub.csproj" />
 </Solution>

@@ -19,10 +19,10 @@ dotnet publish --configuration Release $root -r win-arm64
 
 # publish to the registry
 "$bicep_cmd" publish-extension \
-  --bin-osx-arm64 "$root/src/bin/Release/net10.0/osx-arm64/publish/$ext_name" \
-  --bin-linux-x64 "$root/src/bin/Release/net10.0/linux-x64/publish/$ext_name" \
-  --bin-linux-arm64 "$root/src/bin/Release/net10.0/linux-arm64/publish/$ext_name" \
-  --bin-win-x64 "$root/src/bin/Release/net10.0/win-x64/publish/$ext_name.exe" \
-  --bin-win-arm64 "$root/src/bin/Release/net10.0/win-arm64/publish/$ext_name.exe" \
+  --bin-osx-arm64 "$root/src/Bicep.Extension.GitHub/bin/Release/net10.0/osx-arm64/publish/$ext_name" \
+  --bin-linux-x64 "$root/src/Bicep.Extension.GitHub/bin/Release/net10.0/linux-x64/publish/$ext_name" \
+  --bin-linux-arm64 "$root/src/Bicep.Extension.GitHub/bin/Release/net10.0/linux-arm64/publish/$ext_name" \
+  --bin-win-x64 "$root/src/Bicep.Extension.GitHub/bin/Release/net10.0/win-x64/publish/$ext_name.exe" \
+  --bin-win-arm64 "$root/src/Bicep.Extension.GitHub/bin/Release/net10.0/win-arm64/publish/$ext_name.exe" \
   --target "$target" \
   --force
