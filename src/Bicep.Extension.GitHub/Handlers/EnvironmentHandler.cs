@@ -1,5 +1,3 @@
-using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Bicep.Local.Extension.Host.Handlers;
@@ -53,7 +51,7 @@ public class EnvironmentHandler : GithubResourceHandlerBase<Environment, Environ
                 payload["reviewers"] = reviewersArray;
             }
 
-            using var httpClient = CreateClient(request.Config!.Token);
+            using var httpClient = CreateHttpClient(request.Config!.Token);
             using var response = await httpClient.PutAsync(path, BuildContent(payload), cancellationToken);
 
             await EnsureSuccess(response, "Environment");
@@ -68,35 +66,4 @@ public class EnvironmentHandler : GithubResourceHandlerBase<Environment, Environ
             Repo = properties.Repo,
             Name = properties.Name,
         };
-
-    private static HttpClient CreateClient(string token)
-    {
-        var client = new HttpClient
-        {
-            BaseAddress = new Uri("https://api.github.com/"),
-        };
-
-        client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Bicep.LocalDeploy", "1.0"));
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
-        client.DefaultRequestHeaders.Add("X-GitHub-Api-Version", "2022-11-28");
-
-        return client;
-    }
-
-    private static StringContent BuildContent(JsonObject payload)
-        => new(payload.ToJsonString(), Encoding.UTF8, "application/json");
-
-    private static async Task EnsureSuccess(HttpResponseMessage response, string target)
-    {
-        if (response.IsSuccessStatusCode)
-        {
-            return;
-        }
-
-        var body = await response.Content.ReadAsStringAsync();
-        throw new ResourceErrorException(
-            "GitHubApiError",
-            $"{target} API request failed with status {(int)response.StatusCode}: {body}");
-    }
 }
