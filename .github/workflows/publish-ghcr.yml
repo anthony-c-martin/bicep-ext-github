@@ -38,7 +38,7 @@ jobs:
       
       - name: Run nbgv
         id: nbgv
-        uses: dotnet/nbgv@v0.4.2
+        uses: dotnet/nbgv@v0.5.2
         
       - name: Publish Extension
         run: |
