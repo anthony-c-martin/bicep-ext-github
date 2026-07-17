@@ -258,54 +258,59 @@ public class RepositoryRuleset : RepositoryRulesetIdentifiers
 
 public class RepositoryRulesetConditions
 {
-  [JsonPropertyName("ref_name")]
   [TypeProperty("The ref name condition")]
   public RepositoryRulesetRefNameCondition? RefName { get; set; }
 }
 
 public class RepositoryRulesetRefNameCondition
 {
-  [JsonPropertyName("include")]
   [TypeProperty("Included ref name patterns")]
   public string[]? Include { get; set; }
 
-  [JsonPropertyName("exclude")]
   [TypeProperty("Excluded ref name patterns")]
   public string[]? Exclude { get; set; }
 }
 
 public class RepositoryRulesetRule
 {
-  [JsonPropertyName("type")]
   [TypeProperty("The ruleset rule type", ObjectTypePropertyFlags.Required)]
   public required string Type { get; set; }
 
-  [JsonPropertyName("parameters")]
   [TypeProperty("The ruleset rule parameters")]
   public RepositoryRulesetPullRequestRuleParameters? Parameters { get; set; }
 }
 
 public class RepositoryRulesetPullRequestRuleParameters
 {
-  [JsonPropertyName("dismiss_stale_reviews_on_push")]
   [TypeProperty("Whether stale reviews are dismissed on push")]
   public bool? DismissStaleReviewsOnPush { get; set; }
 
-  [JsonPropertyName("require_code_owner_review")]
   [TypeProperty("Whether code owner reviews are required")]
   public bool? RequireCodeOwnerReview { get; set; }
 
-  [JsonPropertyName("require_last_push_approval")]
   [TypeProperty("Whether the last push must be approved")]
   public bool? RequireLastPushApproval { get; set; }
 
-  [JsonPropertyName("required_approving_review_count")]
   [TypeProperty("The required approving review count")]
   public int? RequiredApprovingReviewCount { get; set; }
 
-  [JsonPropertyName("required_review_thread_resolution")]
   [TypeProperty("Whether review threads must be resolved")]
   public bool? RequiredReviewThreadResolution { get; set; }
+
+  [TypeProperty("Status checks that must pass before merging (for required_status_checks rules)")]
+  public RepositoryRulesetStatusCheck[]? RequiredStatusChecks { get; set; }
+
+  [TypeProperty("Whether the branch must be up to date before merging (for required_status_checks rules)")]
+  public bool? StrictRequiredStatusChecksPolicy { get; set; }
+}
+
+public class RepositoryRulesetStatusCheck
+{
+  [TypeProperty("The name of the required status check", ObjectTypePropertyFlags.Required)]
+  public required string Context { get; set; }
+
+  [TypeProperty("The optional integration (GitHub App) ID that must provide the status check")]
+  public int? IntegrationId { get; set; }
 }
 
 public class RepositoryRulesetCommitMessageRuleParameters
@@ -361,15 +366,12 @@ public class RepositoryRulesetRequiredDeploymentsRuleParameters
 
 public class RepositoryRulesetBypassActor
 {
-  [JsonPropertyName("actor_id")]
   [TypeProperty("The ID of the actor")]
   public int ActorId { get; set; }
 
-  [JsonPropertyName("actor_type")]
   [TypeProperty("The type of actor (OrganizationAdmin, RepositoryRole, Team, or Integration)")]
   public string? ActorType { get; set; }
 
-  [JsonPropertyName("bypass_mode")]
   [TypeProperty("The bypass mode (always or pull_request)")]
   public string? BypassMode { get; set; }
 }

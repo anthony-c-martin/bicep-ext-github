@@ -1,11 +1,23 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using Bicep.Local.Extension.Host.Handlers;
 
 namespace Bicep.Extension.Github.Handlers;
 
 public class RepositoryRulesetHandler : GithubResourceHandlerBase<RepositoryRuleset, RepositoryRulesetIdentifiers>
 {
+    // The GitHub rulesets API expects snake_case property names. The model uses
+    // camelCase (bound from Bicep input), so serialize the payload with a
+    // snake_case naming policy. Null fields are omitted so a rule only sends the
+    // parameters relevant to its type (e.g. no pull request fields on a
+    // required_status_checks rule).
+    private static readonly JsonSerializerOptions PayloadSerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+    };
+
     protected override Task<ResourceResponse> Preview(ResourceRequest request, CancellationToken cancellationToken)
         => HandleRequest(request, async _ =>
         {
@@ -45,14 +57,14 @@ public class RepositoryRulesetHandler : GithubResourceHandlerBase<RepositoryRule
                 ["name"] = request.Properties.Name,
                 ["target"] = request.Properties.Target,
                 ["enforcement"] = request.Properties.Enforcement,
-                ["conditions"] = JsonSerializer.SerializeToNode(request.Properties.Conditions),
-                ["rules"] = JsonSerializer.SerializeToNode(request.Properties.Rules),
+                ["conditions"] = JsonSerializer.SerializeToNode(request.Properties.Conditions, PayloadSerializerOptions),
+                ["rules"] = JsonSerializer.SerializeToNode(request.Properties.Rules, PayloadSerializerOptions),
             };
 
             // Support both typed BypassActors array and legacy BypassActorsJson
             if (request.Properties.BypassActors is { Length: > 0 })
             {
-                payload["bypass_actors"] = JsonSerializer.SerializeToNode(request.Properties.BypassActors);
+                payload["bypass_actors"] = JsonSerializer.SerializeToNode(request.Properties.BypassActors, PayloadSerializerOptions);
             }
             else if (!string.IsNullOrWhiteSpace(request.Properties.BypassActorsJson))
             {

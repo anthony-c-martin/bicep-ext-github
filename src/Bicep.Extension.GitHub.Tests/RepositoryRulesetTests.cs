@@ -26,7 +26,7 @@ public sealed class RepositoryRulesetTests
             enforcement = "active",
             conditions = new Dictionary<string, object>
             {
-                ["ref_name"] = new { include = new[] { "~DEFAULT_BRANCH" }, exclude = Array.Empty<string>() },
+                ["refName"] = new { include = new[] { "~DEFAULT_BRANCH" }, exclude = Array.Empty<string>() },
             },
             rules = new[]
             {
@@ -69,7 +69,7 @@ public sealed class RepositoryRulesetTests
             enforcement = "active",
             conditions = new Dictionary<string, object>
             {
-                ["ref_name"] = new { include = new[] { "~DEFAULT_BRANCH" }, exclude = Array.Empty<string>() },
+                ["refName"] = new { include = new[] { "~DEFAULT_BRANCH" }, exclude = Array.Empty<string>() },
             },
             rules = new[]
             {
@@ -81,5 +81,66 @@ public sealed class RepositoryRulesetTests
 
         var update = mock.Requests.Single(r => r.Method == HttpMethod.Put);
         Assert.AreEqual("/repos/acme/widgets/rulesets/7", update.Uri.AbsolutePath);
+    }
+
+    [TestMethod]
+    public async Task Serializes_conditions_and_rules_using_snake_case()
+    {
+        var mock = new MockHttpMessageHandler((request, _) =>
+            request.Method == HttpMethod.Get
+                ? MockHttpMessageHandler.Json(HttpStatusCode.OK, "[]")
+                : MockHttpMessageHandler.Json(HttpStatusCode.Created, """{"id":1,"name":"main"}"""));
+
+        var handler = new RepositoryRulesetHandler { MessageHandlerOverride = mock };
+
+        var response = await HandlerHarness.CreateOrUpdateAsync(handler, "RepositoryRuleset", new
+        {
+            owner = "acme",
+            repo = "widgets",
+            name = "main",
+            target = "branch",
+            enforcement = "active",
+            conditions = new { refName = new { include = new[] { "~DEFAULT_BRANCH" }, exclude = Array.Empty<string>() } },
+            rules = new object[]
+            {
+                new
+                {
+                    type = "pull_request",
+                    parameters = new { dismissStaleReviewsOnPush = true, requiredApprovingReviewCount = 1 },
+                },
+                new
+                {
+                    type = "required_status_checks",
+                    parameters = new
+                    {
+                        strictRequiredStatusChecksPolicy = true,
+                        requiredStatusChecks = new[] { new { context = "build" } },
+                    },
+                },
+            },
+        });
+
+        Assert.IsNull(response.ErrorData);
+
+        var create = mock.Requests.Single(r => r.Method == HttpMethod.Post);
+        var body = JsonSerializer.Deserialize<JsonElement>(create.Body);
+
+        // ref_name must be populated (regression: camelCase input previously bound to null).
+        var refName = body.GetProperty("conditions").GetProperty("ref_name");
+        Assert.AreEqual("~DEFAULT_BRANCH", refName.GetProperty("include")[0].GetString());
+
+        var rules = body.GetProperty("rules");
+
+        var pullRequest = rules[0];
+        Assert.AreEqual("pull_request", pullRequest.GetProperty("type").GetString());
+        Assert.IsTrue(pullRequest.GetProperty("parameters").GetProperty("dismiss_stale_reviews_on_push").GetBoolean());
+        Assert.AreEqual(1, pullRequest.GetProperty("parameters").GetProperty("required_approving_review_count").GetInt32());
+        // A pull_request rule must not carry required_status_checks fields.
+        Assert.IsFalse(pullRequest.GetProperty("parameters").TryGetProperty("required_status_checks", out _));
+
+        var statusChecks = rules[1];
+        Assert.AreEqual("required_status_checks", statusChecks.GetProperty("type").GetString());
+        Assert.IsTrue(statusChecks.GetProperty("parameters").GetProperty("strict_required_status_checks_policy").GetBoolean());
+        Assert.AreEqual("build", statusChecks.GetProperty("parameters").GetProperty("required_status_checks")[0].GetProperty("context").GetString());
     }
 }

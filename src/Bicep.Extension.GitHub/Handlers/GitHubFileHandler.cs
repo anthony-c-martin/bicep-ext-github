@@ -43,6 +43,16 @@ public class GitHubFileHandler : GithubResourceHandlerBase<GitHubFile, GitHubFil
 
                 changeSet = await client.Repository.Content.CreateFile(request.Properties.Owner, request.Properties.Repo, request.Properties.Path, createRequest);
             }
+            else if (string.Equals(existingFile.Content, request.Properties.Content, StringComparison.Ordinal))
+            {
+                // The file already has the desired content, so avoid creating an
+                // empty commit and just surface the existing file's metadata.
+                request.Properties.Sha = existingFile.Sha;
+                request.Properties.HtmlUrl = existingFile.HtmlUrl;
+                request.Properties.DownloadUrl = existingFile.DownloadUrl;
+
+                return GetResponse(request);
+            }
             else
             {
                 var updateRequest = string.IsNullOrWhiteSpace(request.Properties.Branch)
