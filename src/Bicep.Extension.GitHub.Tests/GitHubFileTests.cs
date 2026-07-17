@@ -63,4 +63,49 @@ public sealed class GitHubFileTests
         var properties = response.ResourceProperties();
         Assert.AreEqual("blobsha", properties.GetProperty("sha").GetString());
     }
+
+    [TestMethod]
+    public async Task Skips_update_when_content_matches()
+    {
+        // GetAllContents for a file returns an array with the (base64-encoded) content.
+        var existingJson =
+            $$"""
+            [
+                {
+                    "type": "file",
+                    "name": "README.md",
+                    "path": "README.md",
+                    "sha": "existingsha",
+                    "encoding": "base64",
+                    "content": "{{Convert.ToBase64String(Encoding.UTF8.GetBytes("hello world"))}}",
+                    "html_url": "https://github.com/acme/widgets/blob/main/README.md",
+                    "download_url": "https://raw.githubusercontent.com/acme/widgets/main/README.md"
+                }
+            ]
+            """;
+
+        var mock = new MockHttpMessageHandler((request, _) =>
+            request.Method == HttpMethod.Get
+                ? MockHttpMessageHandler.Json(HttpStatusCode.OK, existingJson)
+                : MockHttpMessageHandler.Json(HttpStatusCode.OK, ChangeSetJson));
+
+        var handler = new GitHubFileHandler { MessageHandlerOverride = mock };
+
+        var response = await HandlerHarness.CreateOrUpdateAsync(handler, "GitHubFile", new
+        {
+            owner = "acme",
+            repo = "widgets",
+            path = "README.md",
+            content = "hello world",
+            commitMessage = "add readme",
+        });
+
+        Assert.IsNull(response.ErrorData);
+
+        // No write (PUT) should be issued when the content already matches.
+        Assert.IsFalse(mock.Requests.Any(r => r.Method == HttpMethod.Put));
+
+        var properties = response.ResourceProperties();
+        Assert.AreEqual("existingsha", properties.GetProperty("sha").GetString());
+    }
 }
