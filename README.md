@@ -36,17 +36,34 @@ To enable verbose tracing, run the following beforehand.
 export BICEP_TRACING_ENABLED=true
 ```
 
-## Publishing to a registry
-This repo is set up with GitHub Actions to publish a new version to an ACR on every push to the `main` branch.
+## Releasing
 
-To pick up a new version after publishing, view the [Publish Extension output](https://github.com/anthony-c-martin/bicep-ext-github/actions/workflows/publish.yml), and update your bicepconfig.json to use the new spec:
+Releases are cut manually so that versioning stays under explicit control — pushing to `main` does
+not publish anything. To release, run the **Release** workflow from the Actions tab (or with
+`gh workflow run release.yml -f version=0.2.0`) and supply the exact version to publish.
 
-![publish extension output](./docs/publish_extension_output.png)
+The workflow validates the version, builds and tests, publishes
+`br:ghcr.io/anthony-c-martin/bicep-ext-github:<version>` and then pushes a `v`-prefixed git tag
+(`v0.2.0`) and GitHub Release. Note that the OCI artifact is tagged with the bare version, while the
+git tag carries the `v` prefix. The workflow refuses to run if the tag already exists, so published
+versions are never replaced; releases must be cut from `main`.
 
-### First time setup
-To configure the GitHub Actions automation for the first time:
+The version supplied to the workflow is stamped into the binary via `-p:Version=`, and is what the
+extension reports to Bicep. Local builds use the placeholder `0.0.1-dev` version from
+[`Bicep.Extension.GitHub.csproj`](./src/Bicep.Extension.GitHub/Bicep.Extension.GitHub.csproj).
 
-Log in to Azure CLI. Customize and run `./scripts/initial_setup.sh`.
+To pick up a new version after publishing, update your `bicepconfig.json` to reference the new tag.
+
+## Repository configuration
+
+To configure this repository's GitHub branch protection and collaborators, login with the `gh` CLI and run:
+
+```powershell
+./scripts/setup.ps1
+```
+
+The script obtains a token with `gh auth token` and deploys
+[`scripts/repo/main.bicepparam`](./scripts/repo/main.bicepparam).
 
 ## Building other extensions
 

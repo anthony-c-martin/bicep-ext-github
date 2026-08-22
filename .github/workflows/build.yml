@@ -18,11 +18,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
 
       - name: Build
         run: dotnet build
@@ -36,11 +34,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
 
       - name: Intall Bicep
         run: |

@@ -1,7 +1,8 @@
 #!/usr/bin/env pwsh
 [cmdletbinding()]
 param(
-   [Parameter(Mandatory=$true)][string]$Target
+   [Parameter(Mandatory=$true)][string]$Target,
+   [Parameter(Mandatory=$false)][string]$Version
 )
 
 $ErrorActionPreference = "Stop"
@@ -19,12 +20,15 @@ $extName="bicep-ext-github"
 # prefer bicep from $PATH, fall back to ~/.azure/bin/bicep
 $bicepCmd = if (Get-Command bicep -ErrorAction SilentlyContinue) { "bicep" } else { "$HOME/.azure/bin/bicep" }
 
+$versionArg = @()
+if ($Version) { $versionArg = @("-p:Version=$Version") }
+
 # build various flavors
-ExecSafe { dotnet publish --configuration Release $root -r osx-arm64 }
-ExecSafe { dotnet publish --configuration Release $root -r linux-x64 }
-ExecSafe { dotnet publish --configuration Release $root -r linux-arm64 }
-ExecSafe { dotnet publish --configuration Release $root -r win-x64 }
-ExecSafe { dotnet publish --configuration Release $root -r win-arm64 }
+ExecSafe { dotnet publish --configuration Release $root -r osx-arm64 @versionArg }
+ExecSafe { dotnet publish --configuration Release $root -r linux-x64 @versionArg }
+ExecSafe { dotnet publish --configuration Release $root -r linux-arm64 @versionArg }
+ExecSafe { dotnet publish --configuration Release $root -r win-x64 @versionArg }
+ExecSafe { dotnet publish --configuration Release $root -r win-arm64 @versionArg }
 
 # publish to the registry
 ExecSafe { & $bicepCmd publish-extension `

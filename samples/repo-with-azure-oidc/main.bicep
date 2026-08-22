@@ -3,7 +3,9 @@ targetScope = 'local'
 import { GitHubRepoConfig } from './types.bicep'
 
 extension az
-extension local
+
+@secure()
+param githubToken string
 
 param gitHubRepo GitHubRepoConfig
 
@@ -11,10 +13,6 @@ param acrResourceGroup {
   subscriptionId: string
   name: string
   location: string
-}
-
-resource getAuthToken 'Command' = {
-  command: 'gh auth token'
 }
 
 module azure 'azure.bicep' = {
@@ -27,7 +25,7 @@ module azure 'azure.bicep' = {
 
 module ghSecrets 'github.bicep' = {
   params: {
-    gitHubToken: trim(getAuthToken.stdOut)
+    gitHubToken: githubToken
     gitHubRepo: gitHubRepo
     azureOidcConfig: azure.outputs.oidcConfig
   }
