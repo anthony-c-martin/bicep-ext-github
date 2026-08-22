@@ -4,8 +4,7 @@
     "ociEnabled": true
   },
   "extensions": {
-    "local": "br:ghcr.io/anthony-c-martin/bicep-ext-local:0.1.21",
-    "github": "br:ghcr.io/anthony-c-martin/bicep-ext-github:0.1.48",
+    "github": "br:ghcr.io/anthony-c-martin/bicep-ext-github:0.0.1",
     "msGraph": "br:mcr.microsoft.com/bicep/extensions/microsoftgraph/v1.0:1.0.0"
   },
   "implicitExtensions": []

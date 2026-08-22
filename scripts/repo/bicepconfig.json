@@ -1,0 +1,10 @@
+{
+  "experimentalFeaturesEnabled": {
+    "localDeploy": true,
+    "ociEnabled": true
+  },
+  "extensions": {
+    "github": "br:ghcr.io/anthony-c-martin/bicep-ext-github:0.0.1"
+  },
+  "implicitExtensions": []
+}

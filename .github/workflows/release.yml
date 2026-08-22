@@ -1,0 +1,112 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release, e.g. 0.2.0'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
+    env:
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+      # The OCI artifact is tagged with the bare version; the git tag is 'v'-prefixed.
+      VERSION: ${{ inputs.version }}
+      TAG: v${{ inputs.version }}
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Validate version
+        run: |
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+            echo "::error::Releases must be cut from 'main', but this run targets '$GITHUB_REF'."
+            exit 1
+          fi
+
+          semver='^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-(0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*))*)?$'
+          if [[ ! "$VERSION" =~ $semver ]]; then
+            echo "::error::'$VERSION' is not a valid semantic version (expected e.g. 0.2.0 or 1.0.0-preview.1, with no leading 'v')."
+            exit 1
+          fi
+
+          # git ls-remote exits 2 when no ref matches, and other non-zero codes on transport
+          # failures - only treat a genuine "not found" as a free version.
+          set +e
+          git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1
+          status=$?
+          set -e
+          if [[ $status -eq 0 ]]; then
+            echo "::error::Tag '$TAG' already exists. Releases are immutable - pick a new version."
+            exit 1
+          elif [[ $status -ne 2 ]]; then
+            echo "::error::Unable to check whether tag '$TAG' exists (git ls-remote exited $status)."
+            exit 1
+          fi
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v6
+
+      - name: Setup Bicep
+        uses: anthony-c-martin/setup-bicep@v1
+        with:
+          version: 0.45.6
+
+      - name: Build
+        run: dotnet build
+
+      - name: Test
+        run: dotnet test
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ github.token }}
+
+      - name: Publish Extension
+        run: |
+          target="br:ghcr.io/${{ github.repository }}:$VERSION"
+          bash ../scripts/publish.sh "$target" "$VERSION"
+
+          echo "Published extension \`$target\`." >> $GITHUB_STEP_SUMMARY
+        working-directory: ./samples
+
+      - name: Tag release
+        run: |
+          git tag "$TAG" "$GITHUB_SHA"
+          git push origin "refs/tags/$TAG"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          prerelease_args=()
+          if [[ "$VERSION" == *-* ]]; then
+            prerelease_args=(--prerelease --latest=false)
+          fi
+
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --target "$GITHUB_SHA" \
+            --verify-tag \
+            --generate-notes \
+            "${prerelease_args[@]}"

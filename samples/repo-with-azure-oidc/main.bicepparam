@@ -1,5 +1,7 @@
 using 'main.bicep'
 
+param githubToken = readEnvironmentVariable('GITHUB_TOKEN')
+
 param acrResourceGroup = {
   subscriptionId: 'd08e1a72-8180-4ed3-8125-9dff7376b0bd'
   name: 'bicep-local-deploy-test'

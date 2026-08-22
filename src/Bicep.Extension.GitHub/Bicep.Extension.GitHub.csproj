@@ -14,11 +14,12 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <RuntimeIdentifiers>win-x64;win-arm64;osx-arm64;linux-x64;linux-arm64</RuntimeIdentifiers>
+    <!-- Overridden by the release pipeline via -p:Version=<version>. -->
+    <Version>0.0.1-dev</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Azure.Bicep.Local.Extension" Version="0.46.1" />
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.10.91" />
     <PackageReference Include="Octokit" Version="14.0.0" />
     <PackageReference Include="Sodium.Core" Version="1.4.1" />
   </ItemGroup>
