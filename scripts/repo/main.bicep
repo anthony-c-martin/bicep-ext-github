@@ -36,6 +36,15 @@ resource repository 'Repository' = {
   deleteBranchOnMerge: true
 }
 
+resource actionsPermissions 'RepositoryActionsPermissions' = {
+  owner: repository.owner
+  repo: repository.name
+  enabled: true
+  allowedActions: 'all'
+  defaultWorkflowPermissions: 'read'
+  canApprovePullRequestReviews: true
+}
+
 resource mainProtection 'RepositoryRuleset' = {
   owner: repository.owner
   repo: repository.name
